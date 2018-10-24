@@ -1,0 +1,46 @@
+mat-panel-description{
+    flex-grow: 0;
+    margin-right: 36px;
+}
+mat-card, mat-expansion-panel{
+    width: 90%;
+    margin: auto;
+}
+mat-action-row{
+    background-color: #eeebeb;
+    clear: both;
+}
+mat-card{
+    text-align: center;
+    font-size: 1.3em;
+}
+.link{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+.add{
+    position: absolute;
+    right: 5%;
+    bottom: 10%;
+    background-color: #3fb54c;
+}
+.note-value{
+    float: left;
+    width: 77%;
+}
+.note-image{
+    width: 17%;
+    margin-right: 5%;
+    margin-bottom: 3%;
+    height: 150px;
+    float: right;
+    box-shadow: 1px 2px 4px 0px rgba(48, 60, 99, 0.6);
+}
+mat-paginator{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background-color: lightgrey;
+}
+

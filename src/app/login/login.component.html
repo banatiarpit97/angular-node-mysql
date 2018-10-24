@@ -1,0 +1,23 @@
+<div id="particles-js"></div>
+<mat-card>
+  <mat-card-title>
+    <span class="mat-h1 mat-headline">Login to Notes App</span>
+    <span class="material-icons">event</span>
+  </mat-card-title>
+  <mat-card-content>
+    <form class="login-form" #loginForm="ngForm" (submit)='login(loginForm)'>
+      <mat-form-field class="full-width">
+        <input type="email" name="email" matInput placeholder="Email" ngModel #email="ngModel" required email>
+        <mat-error *ngIf="email.invalid">Please enter a valid email</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input type="password" name="password" matInput placeholder="Password" ngModel #password="ngModel" required>
+        <mat-error *ngIf="password.invalid">Please enter a valid password</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" color='accent' style="float: right;margin-top: 5%;">LOGIN</button>
+      <p class="signup">Not registered yet? <a [routerLink]="['/signup']">Signup</a></p>
+    </form>
+  </mat-card-content>
+</mat-card>

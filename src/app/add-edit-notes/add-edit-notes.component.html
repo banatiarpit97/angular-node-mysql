@@ -1,0 +1,20 @@
+<h2 mat-dialog-title class="mat-h2 mat-title">{{state}} Note</h2>
+<mat-dialog-content>
+  <form class="notes-form" [formGroup]='note' (ngSubmit)='saveNote()'>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Title" formControlName='title'>
+    </mat-form-field>
+  
+    <mat-form-field class="full-width">
+      <textarea matInput placeholder="Note" formControlName='noteValue'></textarea>
+    </mat-form-field>
+
+    <img src="{{noteImage}}" (click)="image.click()" class="img-placeholder">
+    <mat-checkbox *ngIf="state == 'Edit'" formControlName='date_time'>Update date and time</mat-checkbox>    
+    <input type="file" #image accept="image/*" (change)="imgUpload($event)">
+    <button mat-raised-button type="submit" color='primary' style="float: right;">Save</button>  
+  </form>
+</mat-dialog-content>
+<!-- <mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]="true" color='primary'>Save</button>
+</mat-dialog-actions> -->

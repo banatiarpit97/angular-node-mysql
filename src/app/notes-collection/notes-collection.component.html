@@ -1,0 +1,33 @@
+<mat-spinner *ngIf="notesService.loading" style="margin:auto" color="accent"></mat-spinner>
+<mat-card *ngIf="notesService.notes.length == 0 && !notesService.loading">
+    There are no notes to display. 
+    <a (click)="addNote()" class="link">
+        Want to add one?
+    </a>
+</mat-card>
+
+<mat-accordion *ngIf="notesService.notes.length != 0 && !notesService.loading">
+  <mat-expansion-panel *ngFor = "let note of notesService.notes">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{note.title}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{note.date_time}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <p class="note-value">{{note.value}}</p>
+
+    <img *ngIf = "note.image" src="http://localhost:3000/images/{{note.image}}" class="note-image">
+
+    <mat-action-row>
+      <button mat-button color='primary' (click)="editNote(note.id)">EDIT</button>
+      <button mat-button color='warn' (click)="deleteNote(note.id)">DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+<mat-accordion>
+<mat-paginator length = "{{notesService.total}}" pageSize = "{{pageSize}}" [pageSizeOptions] = "pagesizeoptions" (page)="onPageChange($event)"></mat-paginator>
+<button mat-fab color="primary" class="add">
+  <i class="material-icons" (click)="addNote()">add</i>
+</button>
