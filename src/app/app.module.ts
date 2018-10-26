@@ -12,7 +12,8 @@ import {  MatToolbarModule,
           MatInputModule,
           MatCheckboxModule,
           MatProgressSpinnerModule,
-          MatPaginatorModule } from '@angular/material';
+          MatPaginatorModule,
+          MatSnackBarModule } from '@angular/material';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NotesCollectionComponent } from './notes-collection/notes-collection.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -21,6 +22,8 @@ import { AddEditNotesComponent } from './add-edit-notes/add-edit-notes.component
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './services/auth-interceptor';
+import { ErrorInterceptor } from './services/error-interceptor';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +32,8 @@ import { AuthInterceptor } from './services/auth-interceptor';
     PageNotFoundComponent,
     AddEditNotesComponent,
     SignupComponent,
-    LoginComponent
+    LoginComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -46,10 +50,14 @@ import { AuthInterceptor } from './services/auth-interceptor';
     MatInputModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSnackBarModule
   ],
   entryComponents: [AddEditNotesComponent],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true},
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

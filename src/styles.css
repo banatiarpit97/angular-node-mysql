@@ -1,3 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
 body { margin: 0; }
+.red-snackbar{
+    background-color: red;
+}
+.red-snackbar .mat-simple-snackbar-action  {
+    color: white;
+}
+.green-snackbar{
+    background-color: green;
+}
+.green-snackbar .mat-simple-snackbar-action  {
+    color: white;
+}

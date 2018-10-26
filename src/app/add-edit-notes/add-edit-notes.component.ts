@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NotesService } from '../services/notes.service';
+import { MatSnackBar } from '@angular/material';
+
 @Component({
   selector: 'app-add-edit-notes',
   templateUrl: './add-edit-notes.component.html',
@@ -15,7 +17,7 @@ export class AddEditNotesComponent implements OnInit {
   imageUrl = "http://localhost:3000/images/";
   constructor(public dialogRef: MatDialogRef<AddEditNotesComponent>,
     private FormBuilder: FormBuilder, public notesService:NotesService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any, public snackBar: MatSnackBar) {
       this.note = this.FormBuilder.group({
         title : [null, Validators.required],
         noteValue: [null, Validators.required],
@@ -41,7 +43,11 @@ export class AddEditNotesComponent implements OnInit {
     this.notesService.addNote(note)
       .subscribe((data: any) => {
         this.notesService.loading = false;
-        if (data.message === 'success') { 
+        if (data.status === 'success') {
+          this.snackBar.open(data.message, "close", {
+            duration: 3000,
+            panelClass: ['green-snackbar']
+          });
           this.notesService.getNotes(this.data.pageSize, this.data.pageSize*this.data.current);
         }
         this.dialogRef.close();
@@ -52,7 +58,11 @@ export class AddEditNotesComponent implements OnInit {
     this.notesService.editNote(note, id, editImage)
       .subscribe((data: any) => {
         this.notesService.loading = false;
-        if (data.message === 'success') { 
+        if (data.status === 'success') { 
+          this.snackBar.open(data.message, "close", {
+            duration: 3000,
+            panelClass: ['green-snackbar']
+          });
           this.notesService.notes.forEach((elem) => {
             if(elem.id === id){
               elem.title = data.body.title;

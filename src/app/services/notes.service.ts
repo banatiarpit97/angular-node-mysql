@@ -30,7 +30,6 @@ export class NotesService {
     postData.append('title', note.value.title);
     postData.append('noteValue', note.value.noteValue);
     postData.append('image', note.value.image, note.value.title);
-    postData.append('user_id', details.user_id.toString());
     postData.append('date_time', details.date_time);
     return this.http.post(this.apiUrl, postData);
   }

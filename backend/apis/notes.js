@@ -28,19 +28,22 @@ const storage = multer.diskStorage({
 
 router.get('/', checkAuth, (req, res) => {
     let count;
-    connection.query("SELECT COUNT(*) MAX FROM notes WHERE user_id=1", (req1, result) => {
+    connection.query(`SELECT COUNT(*) MAX FROM notes WHERE user_id=${req.userDetails.user_id}`, (req1, result) => {
         count = result;
-        const sql = `SELECT * FROM notes WHERE user_id=1 LIMIT ${req.query.offset}, ${req.query.pageSize}`;        
-        connection.query(sql, (req2, rows) => {
-            res.json({
+        const sql = `SELECT * FROM notes WHERE user_id=${req.userDetails.user_id} LIMIT ${req.query.offset}, ${req.query.pageSize}`;        
+        connection.query(sql, (err, rows) => {
+            if (err) {
+                res.status(500).json({
+                    message: "Error occured while executing databse query."
+                });
+            };
+            res.status(200).json({
                 message: 'success',
                 body: rows,
                 count : count[0]
             });
         })
-    })
-    
-    
+    }) 
 })
 
 router.post('/', checkAuth, multer({storage:storage}).single('image'), (req, res) => {
@@ -52,14 +55,19 @@ router.post('/', checkAuth, multer({storage:storage}).single('image'), (req, res
         imgName = "";
     }
     let sql = `INSERT INTO notes(user_id, title, value, image, date_time) VALUES 
-                (${req.body.user_id},'${req.body.title}',
+                (${req.userDetails.user_id},'${req.body.title}',
                 '${req.body.noteValue}', '${imgName}','${req.body.date_time}')`;
 
 
     connection.query(sql, (err, result) => {
-        if(err){throw err};
-        res.json({ 
-            message: 'success', 
+        if (err) {
+            res.status(500).json({
+                message: "Error occured while executing databse query."
+            });
+        };
+        res.status(200).json({ 
+            message: 'New note created successfully.', 
+            status: "success",
             body: {
                 title: req.body.title,
                 value: req.body.noteValue,
@@ -89,9 +97,14 @@ router.patch('/:id', checkAuth, multer({ storage: storage }).single('image'), (r
     }
     
     connection.query(sql, (err, result) => {
-        if (err) { throw err };
-        res.json({
-            message: 'success',
+        if (err) {
+            res.status(500).json({
+                message: "Error occured while executing databse query."
+            });
+        };
+        res.status(200).json({
+            message: 'Note updated successfully.',
+            status: "success",
             body: {
                 title: req.body.title,
                 value: req.body.noteValue,
@@ -105,13 +118,20 @@ router.patch('/:id', checkAuth, multer({ storage: storage }).single('image'), (r
 router.delete('/:id', checkAuth, (req, res) => {
     const sql = `DELETE FROM notes WHERE id = '${req.params.id}'`;
     connection.query(sql, (err, result) => {
-        if (err) { throw err };
-        res.json({ message: 'success'});
+        if (err) {
+            res.status(500).json({
+                message: "Error occured while executing databse query."
+            });
+        };
+        res.status(200).json({ 
+            message: 'Note deleted successfully.',
+            status: "success",
+        });
     })
 })
 
 router.all('*', (req, res) => {
-    res.json({ message: 'Bad request' });
+    res.json({ message: 'Bad request.' });
 })
 
 module.exports = router;

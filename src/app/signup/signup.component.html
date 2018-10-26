@@ -7,20 +7,26 @@
   <mat-card-content>
     <form class="signup-form" #signupForm="ngForm" (submit)='signup(signupForm)'>
       <mat-form-field class="full-width">
-        <input type="text" name="name" matInput placeholder="Name" ngModel #name="ngModel" required>
+        <input type="text" name="name" matInput placeholder="Name" ngModel #name="ngModel" required [attr.disabled]="confirm">
         <mat-error *ngIf="name.invalid">Please enter a valid name</mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <input type="email" name="email" matInput placeholder="Email" ngModel #email="ngModel" required email>
+        <input type="email" name="email" matInput placeholder="Email" ngModel #email="ngModel" required email [attr.disabled]="confirm">
         <mat-error *ngIf="email.invalid">Please enter a valid email</mat-error>
       </mat-form-field>
     
       <mat-form-field class="full-width">
-        <input type="password" name="password" matInput placeholder="Password" ngModel #password = "ngModel" required>
+        <input type="password" name="password" matInput placeholder="Password" ngModel #password = "ngModel" required [attr.disabled]="confirm">
         <mat-error *ngIf="password.invalid">Please enter a valid password</mat-error>      
       </mat-form-field>
+
+      <mat-form-field class="full-width" *ngIf="confirm">
+        <input type="number" name="code" matInput placeholder="Confirmation code" ngModel #code="ngModel">
+        <mat-error *ngIf="confirm && code.invalid">Please enter a valid code.</mat-error>
+      </mat-form-field>
     
-      <button mat-raised-button type="submit" color='accent' style="float: right;margin-top: 5%;">SIGNUP</button>
+      <button mat-raised-button type="submit" color='accent' style="float: right;margin-top: 5%;" *ngIf="!confirm">SIGNUP</button>
+      <button mat-raised-button type="submit" color='accent' style="float: right;margin-top: 5%;" *ngIf="confirm">CONFIRM</button>
       <p class="login">Already registered? <a [routerLink]="['/login']">Login</a></p>
     </form>
   </mat-card-content>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
   private timer;
   isAuthenticated = false;
 
-  constructor(private http: HttpClient, public router:Router) { }
+  constructor(private http: HttpClient, public router: Router, public snackBar: MatSnackBar) { }
   private token = null;
 
   // getAuthStatusListener(){
@@ -20,21 +21,23 @@ export class AuthService {
   // }
 
   signup(credentials){
-    this.http.post(this.apiUrl + "signup", 
-      { name: credentials.name, email: credentials.email, password:credentials.password})
-      .subscribe((data:any) => {
-        if(data.message === "success"){
-          console.log("registered");
-          this.router.navigate(["/login"]);
-        }
-      });
+    return this.http.post(this.apiUrl + "signup", 
+      { name: credentials.name, email: credentials.email, password:credentials.password});  
+  }
+
+  confirm(code, email){
+    return this.http.patch(this.apiUrl + "confirmCode", { code: code, email:email});  
   }
 
   login(credentials){
     this.http.post(this.apiUrl+"login", 
     { email : credentials.email, password:credentials.password})
       .subscribe((data:any) => {
-        if(data.message === "authentication successful"){
+        if(data.status === "success"){
+          this.snackBar.open(data.message, "close", {
+            duration: 3000,
+            panelClass: ['green-snackbar']
+          });
           this.token = data.token;
           if(this.token){
             // this.authStatusListener.next(true);
@@ -51,6 +54,27 @@ export class AuthService {
         }
       },
       (err) => {console.log(err.error.err);});
+  }
+
+  forgot_password(email){
+    this.http.patch(this.apiUrl + 'forgotPassword', {email:email})
+      .subscribe((data:any) => {
+        console.log(data);
+      });
+  }
+
+  reset_password(email, password, password1, uuid){
+    this.http.patch(this.apiUrl + 'resetPassword',
+    { email: email, password:password, password1:password1, uuid:uuid })
+      .subscribe((data: any) => {
+        if(data.status === "success"){
+          this.snackBar.open(data.message, "close", {
+            duration: 3000,
+            panelClass: ['green-snackbar']
+          });
+          this.router.navigate(['/login']);
+        } 
+      });
   }
 
   logout(){

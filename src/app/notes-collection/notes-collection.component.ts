@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AddEditNotesComponent } from '../add-edit-notes/add-edit-notes.component';
 import { MatDialog } from '@angular/material';
 import { NotesService } from '../services/notes.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-notes-collection',
@@ -12,7 +13,8 @@ export class NotesCollectionComponent implements OnInit {
   pageSize = 2;
   current = 0;
   pagesizeoptions = [5,10,50,100];
-  constructor(private notesService:NotesService, public dialog: MatDialog) { }
+  constructor(private notesService:NotesService, public dialog: MatDialog,
+    public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.notesService.loading = true;    
@@ -35,7 +37,11 @@ export class NotesCollectionComponent implements OnInit {
     this.notesService.loading = true;
     this.notesService.deleteNote(id)
       .subscribe((data:any) => {
-        if (data.message === "success") {
+        if (data.status === "success") {
+          this.snackBar.open(data.message, "close", {
+            duration: 3000,
+            panelClass: ['green-snackbar']
+          });
           this.notesService.getNotes(this.pageSize, this.current);          
         }
       });
