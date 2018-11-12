@@ -108,7 +108,7 @@ router.post("/login", (req, res) => {
                     }
                     let token = jwt.sign(
                         {"user_id":rows[0].id, "name":rows[0].name, "email":rows[0].email},
-                        process.env.JWT_KEY, {expiresIn: "1h"});
+                        "my-secret-key", {expiresIn: "1h"});
                     res.status(201).json({
                         message: "Login successful",
                         status: "success",
@@ -118,6 +118,7 @@ router.post("/login", (req, res) => {
                 }
             )
             .catch(err => {
+                console.log(err)
                 return res.status(401).json({
                     message:"Authentication failed"
                 })
