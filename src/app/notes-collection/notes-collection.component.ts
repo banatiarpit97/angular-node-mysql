@@ -13,7 +13,7 @@ export class NotesCollectionComponent implements OnInit {
   pageSize = 2;
   current = 0;
   pagesizeoptions = [5,10,50,100];
-  constructor(private notesService:NotesService, public dialog: MatDialog,
+  constructor(public notesService:NotesService, public dialog: MatDialog,
     public snackBar: MatSnackBar) { }
 
   ngOnInit() {

@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { MatSnackBar } from '@angular/material'; 
 import { Router } from '@angular/router';
 declare var particlesJS:any;
-
+ 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',

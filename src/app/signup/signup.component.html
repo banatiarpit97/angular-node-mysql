@@ -20,8 +20,14 @@
         <mat-error *ngIf="password.invalid">Please enter a valid password</mat-error>      
       </mat-form-field>
 
+      <mat-form-field class="full-width">
+        <input type="password" name="password1" matInput placeholder="Confirm Password" ngModel #password1="ngModel" required
+          [attr.disabled]="confirm">
+        <mat-error *ngIf="password1.invalid">Please confirm your password.</mat-error>
+      </mat-form-field>
+
       <mat-form-field class="full-width" *ngIf="confirm">
-        <input type="number" name="code" matInput placeholder="Confirmation code" ngModel #code="ngModel">
+        <input type="text" name="code" matInput placeholder="Confirmation code" ngModel #code="ngModel">
         <mat-error *ngIf="confirm && code.invalid">Please enter a valid code.</mat-error>
       </mat-form-field>
     

@@ -1,0 +1,27 @@
+#particles-js{
+    background-color: #00bcd4;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login{
+    clear: both;
+    text-align: center;
+    padding-top: 6%;
+    margin-bottom: 0;
+}
+
+mat-card{
+    width: 30% !important;
+    position: absolute !important;
+    left: 33% !important;
+    top: 20%;
+}
+
+mat-card-title{
+    text-align: center;
+}
+
+.full-width {
+    width: 100%;
+}

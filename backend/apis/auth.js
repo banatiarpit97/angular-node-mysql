@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const connection = require('./../mysql');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mailer = require('./../mailer');
+const uuidv1 = require('uuid/v1');
 
 router.post('/signup', (req, res) => {
     const sql = `SELECT * FROM users WHERE email = '${req.body.email}'`;
@@ -12,6 +13,7 @@ router.post('/signup', (req, res) => {
             res.status(500).json({
                 message: "Error occured while executing databse query."
             });
+            return;
         };
         if(rows.length){
             return res.status(401).json({
@@ -19,19 +21,27 @@ router.post('/signup', (req, res) => {
             });
         }
     })
+    if (req.body.password !== req.body.password1) {
+        return res.status(400).json({
+            message: "Passwords do not match"
+        });
+    }
+
     bcrypt.hash(req.body.password, 10)
         .then((hash) => {
             const sql = `INSERT INTO users(name, email, password) 
                 VALUES('${req.body.name}','${req.body.email}', '${hash}')`;
-            connection.query(sql, (err, res1) => {
+            connection.query(sql, (err, result) => {
                 if (err) { 
+                    console.log(2)
                     return res.status(500).json({
                         message : "Error occured while executing databse query."
                     });
                 };
-                const code = Math.floor(10000 + Math.random() * 90000);
-                const sql = `UPDATE users SET code = ${code} WHERE email='${req.body.email}'`;
-                connection.query(sql, (err, res1) => {
+                let code = uuidv1();
+
+                const sql = `UPDATE users SET email_confirmation = '${code}' WHERE email='${req.body.email}'`;
+                connection.query(sql, (err, result) => {
                         if (err) {
                             return res.status(500).json({
                                 message: "Error occured while executing databse query."
@@ -40,7 +50,7 @@ router.post('/signup', (req, res) => {
                     sendMail(
                         "arpit@banati.in",
                         'Confirm your registration',
-                        `Please enter the following code to confirm your registration for Notes App \n ${code}`);
+                        `Please enter the following code to confirm your registration for Notes App \n ${code} \n\n or open the link http://arpit-banati.epizy.com/angular-node-mysql-notes-app/confirm-email`);
                     res.status(200).json({
                         status:"success",
                         message: "Registration successful."
@@ -50,12 +60,12 @@ router.post('/signup', (req, res) => {
         }) 
 })
 
-router.patch('/confirmCode', (req, res) => {
-    const sql = `UPDATE users SET code=0 WHERE code=${req.body.code} AND email='${req.body.email}'`;
+router.patch('/confirmEmail', (req, res) => {
+    const sql = `UPDATE users SET email_confirmation=0 WHERE email_confirmation='${req.body.code}' AND email='${req.body.email}'`;
     connection.query(sql, (err, rows) => {
         if (err) {
             return res.status(500).json({
-                message: "Error occured while executing databse query."
+                message: "Error occured while executing database query."
             });
         };
         if(rows.affectedRows == 1){
@@ -67,7 +77,7 @@ router.patch('/confirmCode', (req, res) => {
         else{
             return res.status(400).json({
                 err: "code error",
-                message: "Please enter the correct sent to your email"
+                message: "Please enter the correct code sent to your email"
             })
         }
     })
@@ -98,7 +108,7 @@ router.post("/login", (req, res) => {
                     }
                     let token = jwt.sign(
                         {"user_id":rows[0].id, "name":rows[0].name, "email":rows[0].email},
-                        "my_secret_key", {expiresIn: "1h"});
+                        process.env.JWT_KEY, {expiresIn: "1h"});
                     res.status(201).json({
                         message: "Login successful",
                         status: "success",
@@ -117,10 +127,11 @@ router.post("/login", (req, res) => {
 })
 
 router.patch('/forgotPassword', (req, res) => {
-    let uuid = randomString();
+    let uuid = uuidv1();
     const sql = `UPDATE users SET forgot_password='${uuid}' WHERE email='${req.body.email}'`;
     connection.query(sql, (err, rows) => {
         if (err) {
+            console.log(err)
             return res.status(500).json({
                 message: "Error occured while executing databse query."
             });
@@ -202,10 +213,10 @@ function sendMail(receiver, subject, text){
 
 // }
 
-function randomString(){
-    const str = Math.random().toString(36).substring(2, 12)
-    + Math.random().toString(36).substring(2, 12);
-    return str;
-}
+// function randomString(){
+//     const str = Math.random().toString(36).substring(2, 12)
+//     + Math.random().toString(36).substring(2, 12);
+//     return str;
+// }
 
 module.exports = router;

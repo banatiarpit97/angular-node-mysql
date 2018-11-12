@@ -4,26 +4,19 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {  MatToolbarModule,
-          MatExpansionModule,
-          MatButtonModule,
-          MatCardModule,
-          MatDialogModule,
-          MatInputModule,
-          MatCheckboxModule,
-          MatProgressSpinnerModule,
-          MatPaginatorModule,
-          MatSnackBarModule } from '@angular/material';
+
 import { NavbarComponent } from './navbar/navbar.component';
 import { NotesCollectionComponent } from './notes-collection/notes-collection.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RoutingModule } from './app-routing.module';
 import { AddEditNotesComponent } from './add-edit-notes/add-edit-notes.component';
 import { SignupComponent } from './signup/signup.component';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './services/auth-interceptor';
 import { ErrorInterceptor } from './services/error-interceptor';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { MaterialModule } from './angular-material.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +25,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     PageNotFoundComponent,
     AddEditNotesComponent,
     SignupComponent,
+    ConfirmEmailComponent,
     LoginComponent,
     ForgotPasswordComponent
   ],
@@ -42,16 +36,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
-    MatExpansionModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    MatSnackBarModule
+    MaterialModule
   ],
   entryComponents: [AddEditNotesComponent],
   providers: [

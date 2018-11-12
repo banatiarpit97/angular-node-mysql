@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  apiUrl = "http://localhost:3000/api/auth/";
+  apiUrl = environment.apiUrl+"auth/";
   // private authStatusListener = new Subject<boolean>();
   private timer;
   isAuthenticated = false;
@@ -22,11 +23,11 @@ export class AuthService {
 
   signup(credentials){
     return this.http.post(this.apiUrl + "signup", 
-      { name: credentials.name, email: credentials.email, password:credentials.password});  
+      { name: credentials.name, email: credentials.email, password: credentials.password, password1: credentials.password1});  
   }
 
   confirm(code, email){
-    return this.http.patch(this.apiUrl + "confirmCode", { code: code, email:email});  
+    return this.http.patch(this.apiUrl + "confirmEmail", { code: code, email:email});  
   }
 
   login(credentials){

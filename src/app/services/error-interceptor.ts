@@ -10,7 +10,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler) {      
         return next.handle(req).pipe(
             catchError((err:HttpErrorResponse) => {
-                console.log(err);
                 this.snackBar.open(err.error.message, "close", {
                     duration: 3000,
                     panelClass: ['red-snackbar']

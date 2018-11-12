@@ -1,0 +1,24 @@
+<div id="particles-js"></div>
+<mat-card>
+  <mat-card-title>
+    <span class="mat-h1 mat-headline">Conform your Email</span>
+  </mat-card-title>
+  <mat-card-content>
+    <form class="signup-form" #signupForm="ngForm" (submit)='confirmEmail(signupForm)'>
+      
+      <mat-form-field class="full-width">
+        <input type="email" name="email" matInput placeholder="Email" ngModel #email="ngModel" required email>
+        <mat-error *ngIf="email.invalid">Please enter a valid email</mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="full-width">
+        <input type="text" name="code" matInput placeholder="Confirmation code*" ngModel #code="ngModel">
+        <mat-error *ngIf="code.invalid">Please enter a valid code.</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" color='accent' style="float: right;margin-top: 5%;">CONFIRM</button>
+      <p class="login">Already registered? <a [routerLink]="['/login']">Login</a></p>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -8,7 +8,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start:backend": "nodemon src/server.js"
+    "start:db":"sudo /opt/lampp/lampp start",
+    "stop:db": "sudo /opt/lampp/lampp stop",
+    "start:server": "nodemon backend/server.js"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +35,7 @@
     "nodemailer": "^4.6.8",
     "particles.js": "^2.0.0",
     "rxjs": "^6.0.0",
+    "uuid": "^3.3.2",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
