@@ -19,7 +19,7 @@
 
     <p class="note-value">{{note.value}}</p>
 
-    <img *ngIf = "note.image" src="http://localhost:3000/images/{{note.image}}" class="note-image">
+    <img *ngIf = "note.image" src="{{imageUrl+note.image}}" class="note-image">
 
     <mat-action-row>
       <button mat-button color='primary' (click)="editNote(note.id)">EDIT</button>

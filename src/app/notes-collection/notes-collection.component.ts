@@ -3,6 +3,8 @@ import { AddEditNotesComponent } from '../add-edit-notes/add-edit-notes.componen
 import { MatDialog } from '@angular/material';
 import { NotesService } from '../services/notes.service';
 import { MatSnackBar } from '@angular/material';
+import { environment } from '../../environments/environment';
+
 
 @Component({
   selector: 'app-notes-collection',
@@ -10,6 +12,7 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./notes-collection.component.css']
 })
 export class NotesCollectionComponent implements OnInit {
+  imageUrl = "/images/";
   pageSize = 2;
   current = 0;
   pagesizeoptions = [5,10,50,100];
