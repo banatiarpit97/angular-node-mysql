@@ -28,7 +28,12 @@ const storage = multer.diskStorage({
 
 router.get('/', checkAuth, (req, res) => {
     let count;
-    connection.query(`SELECT COUNT(*) MAX FROM notes WHERE user_id=${req.userDetails.user_id}`, (req1, result) => {
+    connection.query(`SELECT COUNT(*) MAX FROM notes WHERE user_id=${req.userDetails.user_id}`, (err, result) => {
+        if (err) {
+            res.status(500).json({
+                message: "Error occured while executing databse query."
+            });
+        };
         count = result;
         const sql = `SELECT * FROM notes WHERE user_id=${req.userDetails.user_id} LIMIT ${req.query.offset}, ${req.query.pageSize}`;        
         connection.query(sql, (err, rows) => {

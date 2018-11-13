@@ -14,7 +14,9 @@ app.use("/", express.static(path.join(__dirname, "angular")));
 //because we are hosting angular and node app at the same place
 
 app.use(bosyParser.json())
+//Parses the text as JSON and exposes the resulting object on req.body.
 app.use(bosyParser.urlencoded({extended:false}));
+//Parses the text as URL encoded data and exposing it to req.body
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,6 +28,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/api/notes', notes);
+//all requests to api/notes will be forwarded to 'notes' file
 app.use('/api/auth', auth);
 
 app.use((req, res, next) => {

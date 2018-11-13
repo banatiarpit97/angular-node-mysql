@@ -33,7 +33,6 @@ router.post('/signup', (req, res) => {
                 VALUES('${req.body.name}','${req.body.email}', '${hash}')`;
             connection.query(sql, (err, result) => {
                 if (err) { 
-                    console.log(2)
                     return res.status(500).json({
                         message : "Error occured while executing databse query."
                     });
@@ -132,7 +131,6 @@ router.patch('/forgotPassword', (req, res) => {
     const sql = `UPDATE users SET forgot_password='${uuid}' WHERE email='${req.body.email}'`;
     connection.query(sql, (err, rows) => {
         if (err) {
-            console.log(err)
             return res.status(500).json({
                 message: "Error occured while executing databse query."
             });
