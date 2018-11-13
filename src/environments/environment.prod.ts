@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: "http://localhost:3000/api/",
+  apiUrl: "https://angular-node-mysql-notes.herokuapp.com/api/",
   JWT_KEY: "my-secret-key"
 };
