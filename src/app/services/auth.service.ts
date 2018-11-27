@@ -34,6 +34,7 @@ export class AuthService {
     this.http.post(this.apiUrl+"login", 
     { email : credentials.email, password:credentials.password})
       .subscribe((data:any) => {
+        console.log('d', data);
         if(data.status === "success"){
           this.snackBar.open(data.message, "close", {
             duration: 3000,

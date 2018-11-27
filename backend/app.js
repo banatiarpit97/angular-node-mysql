@@ -5,6 +5,8 @@ const notes = require("./apis/notes");
 const auth = require("./apis/auth");
 const connection = require('./mysql.js');
 const app = express();
+// express.json();
+
 app.use("/images", express.static(path.join(__dirname, "images")));
 //will allow front-end to access data from backend/images
 //and now it can do so by making request to /images rather than backend/images
